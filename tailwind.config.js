@@ -1,8 +1,11 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    // Ensure Tailwind scans all your component files for classes
-    content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+    content: [
+        "./App.{js,jsx,ts,tsx}",
+        "./src/**/*.{js,jsx,ts,tsx}",
+        "./components/**/*.{js,jsx,ts,tsx}", //
+    ],
+    presets: [require("nativewind/preset")],
     theme: {
         extend: {
             // Define your color palette here (as per your instructions)

@@ -1,8 +1,8 @@
 {
     "expo": {
-        "name": "todo_app",
-        "slug": "todo_app",
-        "version": "1.0.0",
+        "name": "SplitTasks",
+        "slug": "SplitTasks",
+        "version": "0.0.1-alpha",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "userInterfaceStyle": "light",
@@ -21,10 +21,12 @@
                 "backgroundColor": "#ffffff"
             },
             "edgeToEdgeEnabled": true,
-            "predictiveBackGestureEnabled": false
+            "predictiveBackGestureEnabled": false,
+            "bundler": "metro"
         },
         "web": {
-            "favicon": "./assets/favicon.png"
+            "favicon": "./assets/favicon.png",
+            "bundler": "metro"
         },
         "plugins": ["expo-secure-store"]
     }

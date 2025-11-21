@@ -6,8 +6,9 @@ import "react-native-url-polyfill/auto";
 
 import { AppNavigator, AuthNavigator } from "./src/navigation/AppNavigator";
 import { LoadingScreen } from "./src/screens/LoadingScreen";
-import { useSettingsStore } from "./src/store/useSettingsStore";
+import { useThemeStore } from "./src/store/useThemeStore";
 import { useUserStore } from "./src/store/useUserStore";
+import "./global.css";
 
 // 1. Initialize Query Client once outside the component tree
 const queryClient = new QueryClient({
@@ -27,10 +28,10 @@ const AppRoot = () => {
     const isLoggedIn = useUserStore((state) => state.isLoggedIn);
     const isLoadingAuth = useUserStore((state) => state.isLoadingAuth);
     const initializeAuth = useUserStore((state) => state.initializeAuth);
-    const initializeTheme = useSettingsStore((state) => state.initializeTheme);
+    const initializeTheme = useThemeStore((state) => state.initializeTheme);
 
     // Get the current color scheme for NativeWind
-    const colorScheme = useSettingsStore((state) => state.currentColorScheme);
+    const colorScheme = useThemeStore((state) => state.currentColorScheme);
     const isDark = colorScheme === "dark";
 
     // Run initialization logic on component mount

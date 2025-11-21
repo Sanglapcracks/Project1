@@ -1,19 +1,14 @@
-import { useSettingsStore } from "../store/useSettingsStore";
+import { useThemeStore } from "../store/useThemeStore";
 import { useUserStore } from "../store/useUserStore";
 import { Text, View, TouchableOpacity, Switch, SafeAreaView } from "react-native";
 
 export const SettingsScreen = () => {
-    const { theme, setTheme } = useSettingsStore((state) => ({
-        theme: state.theme,
-        setTheme: state.setTheme,
-    }));
-    const logout = useUserStore((state) => state.logout); // 👈 Action from User Store
-
-    const isDark = theme === "dark";
+    const { setTheme, isDark } = useThemeStore();
+    const { logout } = useUserStore();
 
     const handleThemeToggle = () => {
         // Calls the action defined in useSettingsStore
-        setTheme(isDark ? "light" : "dark");
+        setTheme(isDark() ? "light" : "dark");
     };
 
     const handleLogout = async () => {
@@ -27,7 +22,7 @@ export const SettingsScreen = () => {
     const ACTIVE_COLOR_DARK = "#8B5CF6"; // primary-dark
 
     // Determine the correct thumb color based on the current scheme
-    const thumbActiveColor = isDark ? ACTIVE_COLOR_DARK : ACTIVE_COLOR_LIGHT;
+    const thumbActiveColor = isDark() ? ACTIVE_COLOR_DARK : ACTIVE_COLOR_LIGHT;
 
     return (
         // Use the defined background aliases
@@ -38,7 +33,7 @@ export const SettingsScreen = () => {
                 {/* Theme Toggle Section */}
                 <View className="flex-row items-center justify-between p-4 mb-4 rounded-xl bg-gray-100 dark:bg-gray-800">
                     <Text className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                        Dark Mode ({isDark ? "On" : "Off"})
+                        Dark Mode ({isDark() ? "On" : "Off"})
                     </Text>
                     <Switch
                         // The track colors are hardcoded here, but should ideally match your theme.
@@ -46,7 +41,7 @@ export const SettingsScreen = () => {
                         trackColor={{ false: "#767577", true: thumbActiveColor }}
                         thumbColor={thumbActiveColor}
                         onValueChange={handleThemeToggle} // 👈 Connected to setTheme
-                        value={isDark}
+                        value={isDark()}
                     />
                 </View>
 

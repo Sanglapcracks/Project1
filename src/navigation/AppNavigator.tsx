@@ -4,7 +4,7 @@ import { LoginScreen } from "../screens/LoginScreen";
 import { GroupsScreen } from "../screens/GroupsScreen";
 import { SettingsScreen } from "../screens/SettingsScreen";
 import { Ionicons } from "@expo/vector-icons";
-import { useSettingsStore } from "../store/useSettingsStore";
+import { useThemeStore } from "../store/useThemeStore";
 import { Text } from "react-native";
 
 const AuthStack = createNativeStackNavigator();
@@ -25,7 +25,7 @@ export const AuthNavigator = () => {
 
 // --- MAIN APPLICATION FLOW (Tabs) ---
 export const AppNavigator = () => {
-    const colorScheme = useSettingsStore((state) => state.currentColorScheme);
+    const colorScheme = useThemeStore((state) => state.currentColorScheme);
     const isDark = colorScheme === "dark";
 
     return (

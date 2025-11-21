@@ -2,36 +2,54 @@ import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Appearance } from "react-native";
 
-type Theme = "light" | "dark" | "system";
+const THEME_KEY = "app_theme_preference";
 
-interface SettingsState {
+const darkColorSchemes = ["dark"] as const;
+const lightColorSchemes = ["light"] as const;
+const colorSchemes = [...lightColorSchemes, ...darkColorSchemes] as const;
+
+type ColorScheme = (typeof colorSchemes)[number];
+type Theme = ColorScheme | "system";
+
+interface ThemeState {
     theme: Theme;
 
     // Derived state (the actual theme applied, useful for NativeWind)
-    currentColorScheme: "light" | "dark";
+    currentColorScheme: ColorScheme;
+
+    isDark: () => boolean;
 
     // Actions
     setTheme: (newTheme: Theme) => void;
     initializeTheme: () => Promise<void>;
 }
 
-const THEME_KEY = "app_theme_preference";
-
 // Helper function to calculate the active scheme based on preference
-const getActiveScheme = (preference: Theme): "light" | "dark" => {
+const getActiveScheme = (preference: Theme): ColorScheme => {
     if (preference === "system") {
         return Appearance.getColorScheme() || "light";
     }
     return preference;
 };
 
-export const useSettingsStore = create<SettingsState>((set, get) => ({
+export const useThemeStore = create<ThemeState>((set, get) => ({
     theme: "system", // Default preference
 
     // Initial calculation based on current system preference
     currentColorScheme: getActiveScheme("system"),
 
     // --- Actions ---
+
+    isDark: (): boolean => {
+        const ccs = get().currentColorScheme as string;
+        for (let index = 0; index < darkColorSchemes.length; index++) {
+            const el = darkColorSchemes[index];
+            if (el === ccs) {
+                return true;
+            }
+        }
+        return false;
+    },
 
     setTheme: (newTheme) => {
         // 1. Persist the new preference
@@ -44,6 +62,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
             theme: newTheme,
             currentColorScheme: activeScheme,
         });
+
         console.log(`Theme set to: ${newTheme}. Active scheme: ${activeScheme}`);
     },
 
